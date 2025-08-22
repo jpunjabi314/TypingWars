@@ -40,7 +40,7 @@ let correctTyped = { player1: 0, player2: 0 };
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCiOgpclD3h12fKUzDpjnoLcDiRgX7dpzo",
+  apiKey: "",
   authDomain: "typewars-27c83.firebaseapp.com",
   projectId: "typewars-27c83",
   storageBucket: "typewars-27c83.firebasestorage.app",
