@@ -1,0 +1,27 @@
+{
+  "name": "typinggame",
+  "version": "1.0.0",
+  "description": "Type Wars is a fun, interactive way to learn typing!",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpunjabi314/TypingWars.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jpunjabi314/TypingWars/issues"
+  },
+  "homepage": "https://github.com/jpunjabi314/TypingWars#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "node-fetch": "^2.7.0"
+  }
+}

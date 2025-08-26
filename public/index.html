@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Type Wars</title>
+<style>
+  :root{--bg:#2457d7;--accent:#0c5d90;--muted:#666}
+  body{font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(180deg,#dde8fb,#edf1f8);margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{width:100%;max-width:820px;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,0.08);padding:22px}
+  h1{margin:0;color:var(--accent);font-size:28px}
+  p.lead{margin:6px 0 18px;color:var(--muted)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  button{border:0;background:var(--accent);color:white;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+  button.ghost{background:#fff;border:1px solid #eee;color:#333}
+  .preview{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .panel{padding:12px;border-radius:8px;background:#e5efff;border:1px solid #c1d7fc}
+  .word{font-size:44px;letter-spacing:10px;color:#000000;font-weight:700;margin:8px 0}
+  .input-row{display:flex;gap:8px}
+  input[type="text"]{flex:1;padding:10px;border-radius:10px;border:1px solid #ddd;font-size:16px}
+  .muted{color:var(--muted);font-size:13px}
+  .small{font-size:13px}
+  .score{font-family:monospace;font-weight:700}
+  .footer{margin-top:14px;color:#aaa;font-size:12px}
+  .hidden{display:none}
+  .google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #fff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+  } 
+  .google-btn img {
+    width: 18px;
+    height: 18px;
+  }
+  .google-btn:hover {
+    box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3),
+                0 4px 8px rgba(60, 64, 67, 0.15);
+  }
+  .google-btn:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: 820px) {
+  .card { padding: 16px; }
+  .word { font-size: 36px; letter-spacing: 6px; }
+  .input-row input[type="text"] { font-size: 14px; padding: 8px; }
+  button { padding: 8px 12px; font-size: 14px; }
+  }
+
+  @media (max-width: 480px) {
+    .preview { grid-template-columns: 1fr; }
+    .word { font-size: 28px; letter-spacing: 4px; }
+  }
+
+  .ai-feedback {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-left: 4px solid #4f46e5;
+  font-style: italic;
+  }
+
+
+
+</style>
+</head>
+<body>
+  <div class="card" role="main">
+    <h1>Type Wars</h1>
+    <p class="lead">A game to test typing speed & accuary — type the word exactly as shown and press Enter or the button.</p>
+
+    <div id="authArea" class="">
+      <div class="panel">
+        <h2>Login</h2>
+        <!-- <button id="googleLoginBtn">Sign in with Google</button> -->
+         <button id="googleLoginBtn" class="google-btn">
+          <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" />
+          <span>Sign in with Google</span>
+          </button>
+      </div>
+    </div>
+
+    <div id="menu" class="hidden">
+      <div class="row">
+        <button id="singleBtn">Single Player</button>
+        <button id="multiBtn">Multiplayer</button>
+        <button id="prepBtn" class="ghost">Prepare Wordlists</button>
+        <button id="logoutBtn" class="ghost">Logout</button> <!-- ✅ NEW -->
+      </div>
+
+      <div class="preview" aria-live="polite">
+        <div class="panel">
+          <div class="small"><strong>Wordlist 1 (preview)</strong></div>
+          <ol id="preview1" class="small"></ol>
+        </div>
+        <div class="panel">
+          <div class="small"><strong>Wordlist 2 (preview)</strong></div>
+          <ol id="preview2" class="small"></ol>
+        </div>
+      </div>
+
+      <div class="panel" style="display:flex;justify-content:space-around;margin-bottom:12px">
+        <div>Best Score: <span id="bestScore">0</span></div>
+        <div>WPM: <span id="wpmLabel">0</span></div>
+        <div>Accuracy: <span id="accuracyLabel">100%</span></div>
+      </div>
+
+    </div>
+
+    <div id="playArea" class="hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div>
+          <div class="muted">Mode</div>
+          <div id="modeLabel" style="font-weight:700"></div>
+        </div>
+        <div style="text-align:right">
+          <div class="muted">Score</div>
+          <div id="scoreLabel" class="score">0</div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-bottom:12px">
+        <div class="muted">Type this word:</div>
+        <div id="displayWord" class="word">—</div>
+
+        <form id="typeForm" class="input-row" onsubmit="return false">
+          <input id="typeInput" type="text" autocomplete="off" placeholder="Type here exactly and press Enter" />
+          <button id="enterBtn">Enter</button>
+        </form>
+
+        <div id="message" class="muted" style="margin-top:8px"></div>
+        <div class="muted" style="margin-top:8px">Progress: <span id="progress">0 / 10</span></div>
+      </div>
+    </div>
+
+    <div id="resultArea" class="hidden">
+      <div class="panel">
+        <h2 style="margin:0 0 8px 0">Results</h2>
+        <div id="resultText" class="small"></div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button id="backBtn" class="ghost">Back to Menu</button>
+          <button id="playAgainBtn">Play Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script src="script.js"></script>
+
+</body>
+</html>
