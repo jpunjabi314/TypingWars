@@ -179,7 +179,7 @@ async function showResult() {
     const resultArea = document.getElementById("resultArea");
     const resultText = document.getElementById("resultText");
     if (!resultArea || !resultText) {
-      console.error("Missing resultArea or resultText in DOM");
+      console.error("❌ Missing resultArea or resultText in DOM");
       return;
     }
 
