@@ -42,7 +42,7 @@ let mistakesLog = [];
 
 
 const firebaseConfig = {
-  apiKey: "",
+  apiKey: "AIzaSyCiOgpclD3h12fKUzDpjnoLcDiRgX7dpzo",
   authDomain: "typewars-27c83.firebaseapp.com",
   projectId: "typewars-27c83",
   storageBucket: "typewars-27c83.firebasestorage.app",
